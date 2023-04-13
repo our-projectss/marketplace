@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Web3 from 'web3'
-import logo from '../logo.png';
 import './App.css';
 import Marketplace from '../abis/Marketplace.json'
 import Navbar from './Navbar'
@@ -59,25 +58,29 @@ class App extends Component {
       products: [],
       loading: true
     }
-
     this.createProduct = this.createProduct.bind(this)
     this.purchaseProduct = this.purchaseProduct.bind(this)
   }
 
   createProduct(name, price) {
-    this.setState({ loading: true })
+    // this.setState({ loading: true })
     this.state.marketplace.methods.createProduct(name, price).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+        this.render();
+      })
+    this.setState({ loading: false })
   }
 
   purchaseProduct(id, price) {
-    this.setState({ loading: true })
+    // this.setState({ loading: true })
     this.state.marketplace.methods.purchaseProduct(id).send({ from: this.state.account, value: price })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+        this.render();
+        console.log("hello")
+      })
+    this.setState({ loading: false })
   }
 
   render() {
@@ -90,9 +93,11 @@ class App extends Component {
               { this.state.loading
                 ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
                 : <Main
-                  products={this.state.products}
-                  createProduct={this.createProduct}
-                  purchaseProduct={this.purchaseProduct} />
+                    products={this.state.products}
+                    createProduct={this.createProduct}
+                    purchaseProduct={this.purchaseProduct} 
+                    account={this.state.account}
+                  />
               }
             </main>
           </div>
