@@ -1,1 +1,10 @@
 /* Styles go here */
+
+tbody tr {
+  border-left: 10px solid black;
+}
+
+.my-product {
+  /* background-color: #7bc043; */
+  border-left: 10px solid #7bc043;
+}
